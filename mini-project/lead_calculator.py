@@ -8,46 +8,56 @@ print (f"Hello, {name}!")
 
 visitors = int(input("How many visitors do you have weekly? "))
 if visitors < 10:
-    x = int(cost)
+    base_price = int(cost)
 elif 10 <= visitors < 50:
-    x = int(cost * 1.1)
+    base_price = int(cost * 1.1)
 elif 50 <= visitors <= 100:
-    x = int(cost * 1.2)
+    base_price = int(cost * 1.2)
 else:
-    x = int(cost * 1.3)
+    base_price = int(cost * 1.3)
 
 service = input("Do you want to add automation? (yes/no) ").strip().lower()
 if "yes" in service:
-    y = int(x * 1.2)
+    total_cost = int(base_price * 1.2)
 elif "no" in service:
-    y = x
+    total_cost = base_price
 else:
-    print ("Invalid input. Please enter 'yes' or 'no'.")
-    y = x  # Default to no service if input is invalid
+    total_cost = base_price  # Default to no service if input is invalid
 
-deposit = y * 0.2
-commission = y * 0.05
+deposit = total_cost * 0.2
+commission = total_cost * 0.05
 
 country = input("What country are you from? ").strip().title()
 budget = int(input("What is your budget? $"))
 
-if y <= budget:
+if total_cost <= budget:
     budget_status = "within budget"
     difference_label = "Budget remaining"
-    difference = budget - y
+    difference = budget - total_cost
 else:
     budget_status = "over budget"
     difference_label = "Budget exceeded by"
-    difference = y - budget
+    difference = total_cost - budget
 
+def get_lead_status(budget_status, service):
+    if budget_status == "within budget": 
+        if service == "yes":
+            return "High priority"
+        elif service == "no":
+            return "Qualified"
+    else:
+        return "Needs review"
+        
+
+lead_status = get_lead_status(budget_status, service)
 time = input("What is your deadline? ").strip().lower()
 email = input("What is your email? ").strip().lower()
 
 print (f"Thank you for your answer, {name}. Your calculation is:")
 print (country, budget, time, email)
-print (f"Your total cost is: ${y:,.2f}")
+print (f"Your total cost is: ${total_cost:,.2f}")
 print (f"Your deposit is: ${deposit:,.2f}")
 print (f"Your commission is: {commission:,.2f}")
 print (f"budget status: {budget_status}")
 print (f"{difference_label}: ${difference:,.2f}")
-
+print (f"lead status: {lead_status}")
